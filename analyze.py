@@ -71,10 +71,19 @@ class Analyze:
             latest_cash BIGINT,
             previous_revenue BIGINT,
             previous_profit BIGINT,
-            previous_cash BIGINT
+            previous_cash BIGINT,
+            profit_growth_pct FLOAT,
+            verdict VARCHAR(50),
+            reason TEXT
         )"""
         db = Database()
         db.execute_query(create_table_query)
+
+        delete_stock_query = f"""
+        DELETE FROM stock_fundamentals WHERE 
+            ticker_name = '{analyzedStock.ticker}'
+        """
+        db.execute_query(delete_stock_query)
 
         insert_stock_query = f"""
         INSERT INTO stock_fundamentals(
@@ -86,7 +95,10 @@ class Analyze:
             latest_cash,
             previous_revenue,
             previous_profit,
-            previous_cash
+            previous_cash,
+            profit_growth_pct,
+            verdict,
+            reason
         )
         VALUES(
             '{analyzedStock.ticker}',
@@ -97,10 +109,10 @@ class Analyze:
             {analyzedStock.latest_cash},
             {analyzedStock.previous_revenue},
             {analyzedStock.previous_profit},
-            {analyzedStock.previous_cash}
+            {analyzedStock.previous_cash},
+            {analyzedStock.growth_pct_change},
+            '{analyzedStock.verdict}',
+            '{analyzedStock.reason}'
         );
         """
         db.execute_query(insert_stock_query)
-
-test =  Analyze()
-#test.analyzeStock("GOOG")

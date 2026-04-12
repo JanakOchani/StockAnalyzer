@@ -12,6 +12,10 @@ class Stock:
         self.previous_profit = 0
         self.previous_cash = 0
 
+        self.growth_pct_change = None
+        self.verdict = None
+        self.reason = None
+
     def setPrice(self, l_price):
         self.current_price = l_price
 
@@ -37,14 +41,31 @@ class Stock:
         self.previous_cash = val
 
     def setProfitGrowthPercentage(self):
-        print(" Do it here ")
-        self.growth_pct_change = 0.0
+        if self.latest_profit and self.previous_profit and self.previous_profit != 0:
+            self.growth_pct_change = round(
+                ((self.latest_profit - self.previous_profit) / self.previous_profit) * 100,
+                2
+            )
 
     def setVerdictAndReason(self):
-        print("Evaluate Verdict And Reason")
-        self.vedict=""
-        self.reason=""
+        trailing_pe = self.pe_ratio
+        profit_growth_pct = self.growth_pct_change
 
+        if trailing_pe is None or profit_growth_pct is None:
+            self.verdict = "Fair"
+            self.reason = "Not enough data"
+
+        elif trailing_pe < 22 and profit_growth_pct > 12:
+            self.verdict = "Not so expensive"
+            self.reason = f"Good profit growth ({profit_growth_pct}%) with reasonable PE."
+
+        elif trailing_pe > 35:
+            self.verdict = "Looks expensive"
+            self.reason = f"High PE ratio ({trailing_pe})."
+
+        else:
+            self.verdict = "Fairly valued"
+            self.reason = f"PE is {trailing_pe} and profit growth is {profit_growth_pct}%."
 
     def getJSON(self):
         return {
@@ -56,8 +77,8 @@ class Stock:
             "LATEST CASH": self.latest_cash,
             "PREVIOUS REVENUE": self.previous_revenue,
             "PREVIOUS PROFIT": self.previous_profit,
-            "PREVIOUS CASH": self.previous_cash
+            "PREVIOUS CASH": self.previous_cash,
+            "PROFIT GROWTH %": self.growth_pct_change,
+            "VERDICT": self.verdict,
+            "REASON": self.reason
         }
-
-
-
