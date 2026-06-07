@@ -10,3 +10,12 @@ The second module is the code file analyze.py with methods of retrieving data fr
 and saving results in the database. 
 The third module is a python file stock.py where the class Stock is defined, and all the necessary attributes for the financial analysis are set. 
 The fourth module database.py is about managing the connection to PostgreSQL and executing SQL queries.
+
+Commands
+Bring up web server: uvicorn api:stockAnalyzer --reload
+Run API curl -X POST "http://127.0.0.1:8000/analyze?ticker=AMZN"
+
+
+
+
+
