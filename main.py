@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, HTTPException
 import yfinance as yf
 import psycopg2

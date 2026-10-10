@@ -1,3 +1,4 @@
+
 class Stock:
     def __init__(self, l_ticker):
         self.ticker = l_ticker

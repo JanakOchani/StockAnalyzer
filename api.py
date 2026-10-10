@@ -1,10 +1,9 @@
+#API.PY
 from fastapi import FastAPI, HTTPException
 from analyze import Analyze
 from stock import Stock
 
 stockAnalyzer = FastAPI()
-
-
 @stockAnalyzer.get("/")
 def root():
     return {"Hello": "StockAnalyzer"}
@@ -21,7 +20,6 @@ def analyzeStock(ticker: str):
 
         json_response = analyzeStock.getJSON()
         print(json_response)
-
         return json_response
 
     except Exception as error:
